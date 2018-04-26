@@ -31,6 +31,15 @@ module.exports.globals = {
 
   async: require('async'),
 
+
+  Minio: require('minio').Client({
+    endPoint: sails.config.custom.minioEndpoint || 'localhost',
+    port: sails.config.custom.minioPort || 9000,
+    secure: sails.config.custom.minioSecure || true,
+    accessKey: sails.config.custom.minioAccessKey,
+    secretKey: sails.config.custom.minioSecretKey
+  }),
+
   /****************************************************************************
   *                                                                           *
   * Whether to expose each of your app's models as global variables.          *

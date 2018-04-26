@@ -20,4 +20,14 @@ module.exports.custom = {
   // stripeSecret: 'sk_test_Zzd814nldl91104qor5911gjald',
   // …
 
+  maxUploadBytes: 20000000, // 20 MB
+  
+  minioEndpoint: 'play.minio.io',
+  minioPort: 9000,
+  minioSecure: true,
+  minioAccessKey: 'Q3AM3UQ867SPQQA43P2F',
+  minioSecretKey: 'zuf+tfteSlswRu7BJ86wekitnifILbZam1KYY3TG',
+  minioBucket: 'Illuminate',
+
+
 };
