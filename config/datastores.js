@@ -49,7 +49,7 @@ module.exports.datastores = {
     *                                                                          *
     ***************************************************************************/
     adapter: 'sails-mongo',
-    url: 'mongodb://10.0.0.129:27017/iluminate',
+    url: 'mongodb://fishy:fishyisagod@ds161529.mlab.com:61529/illuminate',
 
   },
 

@@ -21,4 +21,6 @@ module.exports.custom = {
   // …
 
   maxUploadBytes: 20000000, // 20 MB
+
+  collection: 'illuminate', //MongoDB Collection Name
 };

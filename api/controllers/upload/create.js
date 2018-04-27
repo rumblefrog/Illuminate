@@ -46,6 +46,11 @@ module.exports = {
     uploadFail: {
       responseType: "",
       statusCode: 500
+    },
+
+    insertionFail: {
+      responseType: "",
+      statusCode: 500
     }
 
   },
@@ -111,9 +116,24 @@ module.exports = {
         return exits.uploadFail('Failed to put object');
       }
 
+      [ err ] = await to(
+        sails.getDatastore()
+          .manager
+          .collection(sails.config.custom.collection)
+          .insert({
+            etag: etag,
+            logs: []
+          })
+      );
+
+      if (err) {
+        sails.log.error('Unable to insert into MongoDB');
+        return exits.insertionFail('Unable to insert into MongoDB');
+      }
+
       fs.unlinkSync(uploadedFiles[0].fd);
 
-      sails.log.info('Successfully put object');
+      sails.log.info('Successfully put object', etag);
 
       return exits.success();
     });
