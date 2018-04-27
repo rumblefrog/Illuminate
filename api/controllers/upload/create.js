@@ -116,11 +116,5 @@ module.exports = {
 
       return exits.success();
     });
-  },
-
-  upload: async function (file) {
-
   }
-
-
 };
