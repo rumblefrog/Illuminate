@@ -74,7 +74,7 @@ module.exports = {
         return exits.uploadFail('No file uploaded');
       }
 
-      let err, exists, etag;
+      let err, exists, etag, result, contentType = mime.lookup(uploadedFiles[0].fd);
 
       [ err, exists ] = await to(
         sails.config.minio.Minio.bucketExists(
@@ -107,7 +107,7 @@ module.exports = {
           sails.config.minio.settings.bucket,
           path.basename(uploadedFiles[0].fd),
           uploadedFiles[0].fd,
-          mime.lookup(uploadedFiles[0].fd)
+          contentType
         )
       );
 
@@ -116,12 +116,15 @@ module.exports = {
         return exits.uploadFail('Failed to put object');
       }
 
-      [ err ] = await to(
+      [ err, result ] = await to(
         sails.getDatastore()
           .manager
           .collection(sails.config.custom.collection)
           .insert({
             etag: etag,
+            object: path.basename(uploadedFiles[0].fd),
+            contentType: contentType,
+            views: 0,
             logs: []
           })
       );
@@ -135,7 +138,7 @@ module.exports = {
 
       sails.log.info('Successfully put object', etag);
 
-      return exits.success();
+      return exits.success(`${result.insertedIds[0]}.${mime.extension(contentType)}`);
     });
   }
 };
