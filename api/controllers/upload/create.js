@@ -1,3 +1,7 @@
+const mime = require('mime-types')
+    , path = require('path')
+    , { to } = require('await-to-js');
+
 module.exports = {
 
 
@@ -13,6 +17,7 @@ module.exports = {
 
     key: {
       friendlyName: 'API Key',
+      type: 'string',
       required: true
     },
 
@@ -53,28 +58,67 @@ module.exports = {
 
       maxBytes: sails.config.custom.maxUploadBytes
 
-    }, (err, uploadedFiles) => {
+    }, async (e, uploadedFiles) => {
 
-      if (err)
+      if (e) {
+        sails.log.error('Unable to save to assets directory');
         return exits.uploadFail('Unable to save to asset directory');
+      }
 
-      Minio.bucketExists(sails.config.custom.minioBucket, (err, exists) => {
-        if (err)
-          return exits.uploadFail('Unable to fetch bucket');
+      if (uploadedFiles.length === 0) {
+        sails.log.error('No file uploaded');
+        return exits.uploadFail('No file uploaded');
+      }
 
-        if (!exists) {
-          Minio.makeBucket(sails.config.custom.minioBucket, (err) => {
-            if (err)
-              return exits.uploadFail('Unable to create bucket');
+      let err, exists, etag;
 
-            
-          })
+      [ err, exists ] = await to(
+        sails.config.minio.Minio.bucketExists(
+          sails.config.minio.settings.bucket
+        )
+      );
+
+      if (err) {
+        sails.log.error('Unable to fetch bucket');
+        return exits.uploadFail('Unable to fetch bucket');
+      }
+
+      if (!exists) {
+        [ err ] = await to(
+          sails.config.minio.Minio.makeBucket(
+            sails.config.minio.settings.bucket
+          )
+        );
+
+        if (err) {
+          sails.log.error('Unable to create bucket');
+          return exits.uploadFail('Unable to create bucket');
         }
-      })
-    
-    });
 
-    return exits.success();
+        sails.log.info('Created bucket');
+      }
+
+      [ err, etag ] = await to(
+        sails.config.minio.Minio.fPutObject(
+          sails.config.minio.settings.bucket,
+          path.basename(uploadedFiles[0].fd),
+          uploadedFiles[0].fd,
+          mime.lookup(uploadedFiles[0].fd)
+        )
+      );
+
+      if (err) {
+        sails.log.error('Failed to put object')
+        return exits.uploadFail('Failed to put object');
+      }
+
+      sails.log.info('Successfully put object');
+
+      return exits.success();
+    });
+  },
+
+  upload: async function (file) {
 
   }
 
