@@ -26,6 +26,11 @@ module.exports.routes = {
 
   'POST /upload': 'upload/create',
 
+  'GET /:id': {
+    action: 'view',
+    skipAssets: false 
+  },
+
   /***************************************************************************
   *                                                                          *
   * More custom routes here...                                               *

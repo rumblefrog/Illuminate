@@ -117,7 +117,8 @@ module.exports = {
       }
 
       [ err, result ] = await to(
-        sails.getDatastore()
+        sails
+          .getDatastore()
           .manager
           .collection(sails.config.custom.collection)
           .insert({
