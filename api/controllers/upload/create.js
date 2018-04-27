@@ -1,5 +1,6 @@
 const mime = require('mime-types')
     , path = require('path')
+    , fs = require('fs')
     , { to } = require('await-to-js');
 
 module.exports = {
@@ -53,8 +54,6 @@ module.exports = {
   fn: async function (inputs, exits) {
 
     inputs.payload.upload({
-
-      dirname: 'assets/images/',
 
       maxBytes: sails.config.custom.maxUploadBytes
 
@@ -111,6 +110,8 @@ module.exports = {
         sails.log.error('Failed to put object')
         return exits.uploadFail('Failed to put object');
       }
+
+      fs.unlinkSync(uploadedFiles[0].fd);
 
       sails.log.info('Successfully put object');
 
