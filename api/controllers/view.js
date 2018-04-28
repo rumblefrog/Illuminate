@@ -84,6 +84,8 @@ module.exports = {
         )
     );
 
+    //TODO: Append to logs:[] array
+
     if (err)
       return exits.updateFail('Failed to update document');
 
