@@ -22,6 +22,8 @@ module.exports.custom = {
 
   root: 'https://illuminate.ngrok.io',
 
+  key: 'fishyisagod',
+
   maxUploadBytes: 20000000, // 20 MB
 
   collection: 'illuminate', //MongoDB Collection Name
