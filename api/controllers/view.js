@@ -42,6 +42,11 @@ module.exports = {
     fetchFail: {
       responseType: "",
       statusCode: 500
+    },
+
+    updateFail: {
+      responseType: "",
+      statusCode: 500
     }
 
   },
@@ -69,10 +74,20 @@ module.exports = {
 
     if (result === null)
       return exits.notFound('ID not found');
-    
-    console.log(result);
 
-    stream = await to(
+    [ err ] = await to(
+      datastore.manager
+        .collection(sails.config.custom.collection)
+        .updateOne(
+          { _id: datastore.driver.mongodb.ObjectID(needle) },
+          { $inc: { views: 1 } }
+        )
+    );
+
+    if (err)
+      return exits.updateFail('Failed to update document');
+
+    [ err, stream ] = await to(
       sails.config.minio.Minio
         .getObject(
           sails.config.minio.settings.bucket,
@@ -80,11 +95,10 @@ module.exports = {
         )
     );
 
-    console.log(stream.Body);
+    if (err)
+      return exits.fetchFail('Unable to fetch from storage');
 
-    return exits.success();
-    
-    // stream.createReadStream().pipe(exits);
+    stream.pipe(this.res);
   }
 
 
