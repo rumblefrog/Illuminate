@@ -29,6 +29,8 @@ module.exports.sockets = {
 
   // transports: [ 'websocket' ],
 
+  onlyAllowOrigins: ['http://localhost:1337'],
+
 
   /***************************************************************************
   *                                                                          *

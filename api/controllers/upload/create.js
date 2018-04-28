@@ -139,7 +139,7 @@ module.exports = {
 
       sails.log.info('Successfully put object', etag);
 
-      return exits.success(`${result.insertedIds[0]}.${mime.extension(contentType)}`);
+      return exits.success(`${sails.config.custom.root}/${result.insertedIds[0]}.${mime.extension(contentType)}`);
     });
   }
 };

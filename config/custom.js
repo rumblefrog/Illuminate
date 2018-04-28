@@ -20,6 +20,8 @@ module.exports.custom = {
   // stripeSecret: 'sk_test_Zzd814nldl91104qor5911gjald',
   // …
 
+  root: 'https://illuminate.ngrok.io',
+
   maxUploadBytes: 20000000, // 20 MB
 
   collection: 'illuminate', //MongoDB Collection Name
