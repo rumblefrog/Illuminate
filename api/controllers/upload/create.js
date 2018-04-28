@@ -125,8 +125,7 @@ module.exports = {
             etag: etag,
             object: path.basename(uploadedFiles[0].fd),
             contentType: contentType,
-            views: 0,
-            logs: []
+            views: 0
           })
       );
 
