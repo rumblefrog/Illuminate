@@ -98,7 +98,8 @@ module.exports = {
     if (err)
       return exits.fetchFail('Unable to fetch from storage');
 
-    this.res.set('Content-Views', result.views);
+    this.res.set('content-type', result.contentType);
+    this.res.set('content-views', result.views);
 
     stream.pipe(this.res);
   }
