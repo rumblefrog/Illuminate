@@ -61,11 +61,13 @@ module.exports = {
     if (!datastore.driver.mongodb.ObjectID.isValid(needle))
       return exits.invalidID('Invalid ID');
 
+    let objID = datastore.driver.mongodb.ObjectID(needle);
+
     [ err, result ] = await to(
       datastore.manager
         .collection(sails.config.custom.collection)
         .findOne({
-          _id: datastore.driver.mongodb.ObjectID(needle)
+          _id: objID
         })
     );
 
@@ -79,7 +81,7 @@ module.exports = {
       datastore.manager
         .collection(sails.config.custom.collection)
         .updateOne(
-          { _id: datastore.driver.mongodb.ObjectID(needle) },
+          { _id: objID },
           { $inc: { views: 1 } }
         )
     );
@@ -98,6 +100,8 @@ module.exports = {
     if (err)
       return exits.fetchFail('Unable to fetch from storage');
 
+    this.res.set('created-at', objID.getTimestamp());
+    this.res.set('etag', result.etag);
     this.res.set('content-type', result.contentType);
     this.res.set('content-views', result.views);
 
