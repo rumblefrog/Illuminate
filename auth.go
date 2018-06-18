@@ -6,16 +6,11 @@ import (
 
 func isFishy(h http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		r.ParseForm()
+		r.ParseMultipartForm(20000000) // 20 MB memory space for files
 
-		key, exist := r.PostForm["key"]
+		key := r.FormValue("key")
 
-		if !exist {
-			http.Error(w, "Key Unidentified", http.StatusBadRequest)
-			return
-		}
-
-		if key[0] != "fishyisagod" {
+		if key != "fishyisagod" {
 			http.Error(w, "Key Invalid", http.StatusUnauthorized)
 			return
 		}
