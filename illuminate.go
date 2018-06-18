@@ -10,8 +10,10 @@ import (
 	"github.com/RumbleFrog/Illuminate/middlewares"
 )
 
+var config helpers.Configuration
+
 func main() {
-	helpers.LoadConfig()
+	config := helpers.LoadConfig()
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, "Illuminate the world")
@@ -19,5 +21,5 @@ func main() {
 
 	http.HandleFunc("/upload", middlewares.IsPost(middlewares.IsFishy(controllers.UploadController)))
 
-	log.Fatal(http.ListenAndServe(":8000", nil))
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(": %d", config.Port), nil))
 }
