@@ -4,8 +4,9 @@ import (
 	"gopkg.in/mgo.v2"
 )
 
-var session mgo.v2.Session
+// MongoConnect returns a session pointer to the MongoDB
+func MongoConnect(MongoURL string) (session *mgo.Session) {
+	session, err := mgo.Dial(MongoURL)
 
-func mongoConnect() {
-	session, err := mgo.dial(config.MongoURL)
+	return
 }
