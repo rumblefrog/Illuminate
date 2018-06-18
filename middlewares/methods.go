@@ -1,8 +1,8 @@
-package main
+package middlewares
 
 import "net/http"
 
-func isPost(h http.HandlerFunc) http.HandlerFunc {
+func IsPost(h http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == "POST" {
 			h(w, r)

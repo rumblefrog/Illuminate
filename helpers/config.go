@@ -1,27 +1,27 @@
-package main
+package helpers
 
 import (
 	"encoding/json"
 	"os"
 )
 
-type configuration struct {
+type Configuration struct {
 	MongoURL string `json:"title"`
 	S3       map[string]string
 }
 
-var config configuration
+var Config Configuration
 
-func loadConfig() Configuration {
+func LoadConfig() Configuration {
 	file, _ := os.Open("config.json")
 
 	decoder := json.NewDecoder(file)
 
-	config = configuration{}
+	Config = Configuration{}
 
-	decoder.Decode(&config)
+	decoder.Decode(&Config)
 
 	defer file.Close()
 
-	return config
+	return Config
 }

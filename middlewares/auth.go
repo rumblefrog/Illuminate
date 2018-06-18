@@ -1,10 +1,10 @@
-package main
+package middlewares
 
 import (
 	"net/http"
 )
 
-func isFishy(h http.HandlerFunc) http.HandlerFunc {
+func IsFishy(h http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		r.ParseMultipartForm(20000000) // 20 MB memory space for files
 
