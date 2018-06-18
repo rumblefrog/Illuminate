@@ -1,4 +1,4 @@
-package upload
+package controllers
 
 import (
 	"fmt"
