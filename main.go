@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-
-	"github.com/RumbleFrog/Illuminate/controllers"
 )
 
 func main() {
@@ -13,7 +11,7 @@ func main() {
 		fmt.Fprint(w, "Illuminate the world")
 	})
 
-	http.HandleFunc("/upload", controllers.UploadController)
+	http.HandleFunc("/upload", IsPost(UploadController))
 
 	log.Fatal(http.ListenAndServe(":8000", nil))
 }
