@@ -11,7 +11,7 @@ func main() {
 		fmt.Fprint(w, "Illuminate the world")
 	})
 
-	http.HandleFunc("/upload", IsPost(UploadController))
+	http.HandleFunc("/upload", isPost(uploadController))
 
 	log.Fatal(http.ListenAndServe(":8000", nil))
 }
