@@ -6,13 +6,13 @@ import (
 )
 
 type configuration struct {
-	MongoURL string
+	MongoURL string `json:"title"`
 	S3       map[string]string
 }
 
 var config configuration
 
-func loadConfig() {
+func loadConfig() Configuration {
 	file, _ := os.Open("config.json")
 
 	decoder := json.NewDecoder(file)
@@ -22,4 +22,6 @@ func loadConfig() {
 	decoder.Decode(&config)
 
 	defer file.Close()
+
+	return config
 }

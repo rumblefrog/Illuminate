@@ -1,0 +1,6 @@
+{
+    "MongoURL": "test",
+    "S3": {
+        "1": "first"
+    }
+}
