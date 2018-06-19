@@ -13,7 +13,7 @@ var Config Configuration
 type Configuration struct {
 	Port     uint64
 	MongoURL string
-	Minio    MinioCredentials
+	Minio    *MinioCredentials
 }
 
 // MinioCredentials is a sub-struct of Configuration and provides

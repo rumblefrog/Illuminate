@@ -16,6 +16,7 @@ func main() {
 	modules.MinioConnect(helpers.Config.Minio)
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Print(r.URL.Path[1:])
 		fmt.Fprint(w, "Illuminate the world")
 	})
 

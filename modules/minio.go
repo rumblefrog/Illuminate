@@ -11,7 +11,7 @@ import (
 var MinioClient *minio.Client
 
 // MinioConnect fufills the MinioClient pointer
-func MinioConnect(creds helpers.MinioCredentials) {
+func MinioConnect(creds *helpers.MinioCredentials) {
 	var err error
 
 	MinioClient, err = minio.New(creds.Endpoint, creds.AccessKey, creds.PrivateKey, creds.Secure)
