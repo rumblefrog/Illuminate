@@ -17,8 +17,6 @@ func main() {
 		fmt.Fprint(w, "Illuminate the world")
 	})
 
-	fmt.Println(helpers.Config)
-
 	http.HandleFunc("/upload", middlewares.IsPost(middlewares.IsFishy(controllers.UploadController)))
 
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", helpers.Config.Port), nil))

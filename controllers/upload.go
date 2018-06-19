@@ -9,5 +9,7 @@ func UploadController(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Fprint(w, "Test")
 
-	fmt.Println(r.MultipartForm)
+	h := r.MultipartForm.File["payload"]
+
+	fmt.Println(*h.tmpfile)
 }

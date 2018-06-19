@@ -7,11 +7,13 @@ import (
 )
 
 // Session for the MongoDB connection
-var Session mgo.Session
+var Session *mgo.Session
 
 // MongoConnect returns a session pointer to the MongoDB
 func MongoConnect(MongoURL string) {
-	Session, err := mgo.Dial(MongoURL)
+	var err error
+
+	Session, err = mgo.Dial(MongoURL)
 
 	if err != nil {
 		log.Fatal(err)
