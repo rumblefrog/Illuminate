@@ -1,7 +1,11 @@
 {
     "Port": 8000,
     "MongoURL": "test",
-    "S3": {
-        "1": "first"
+    "Minio": {
+        "Endpoint": "127.0.0.1:9000",
+        "AccessKey": "26IUCN8B55XPNIV6HEH0",
+        "PrivateKey": "saY1KgbvrXBG1RVS20tjRjjfzlTh+eVonIJbzIFN",
+        "Securet": false,
+        "Bucket": "illuminate"
     }
 }

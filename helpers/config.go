@@ -20,7 +20,6 @@ type Configuration struct {
 // info regarding the Minio instance
 type MinioCredentials struct {
 	Endpoint   string
-	Port       uint8
 	Secure     bool
 	AccessKey  string
 	PrivateKey string
