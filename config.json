@@ -1,5 +1,5 @@
 {
-    "Port": "8000",
+    "Port": 8000,
     "MongoURL": "test",
     "S3": {
         "1": "first"

@@ -1,12 +1,19 @@
 package modules
 
 import (
+	"log"
+
 	"gopkg.in/mgo.v2"
 )
 
-// MongoConnect returns a session pointer to the MongoDB
-func MongoConnect(MongoURL string) (session *mgo.Session) {
-	session, err := mgo.Dial(MongoURL)
+// Session for the MongoDB connection
+var Session mgo.Session
 
-	return
+// MongoConnect returns a session pointer to the MongoDB
+func MongoConnect(MongoURL string) {
+	Session, err := mgo.Dial(MongoURL)
+
+	if err != nil {
+		log.Fatal(err)
+	}
 }
