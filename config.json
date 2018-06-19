@@ -1,6 +1,6 @@
 {
     "Port": 8000,
-    "MongoURL": "test",
+    "MongoURL": "mongodb+srv://fishy:Ycb%40hUEHN*u8keL41W1x@dev-db-7p3zq.mongodb.net/test",
     "Minio": {
         "Endpoint": "127.0.0.1:9000",
         "AccessKey": "26IUCN8B55XPNIV6HEH0",

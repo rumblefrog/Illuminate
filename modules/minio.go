@@ -25,14 +25,14 @@ func MinioConnect(creds *helpers.MinioCredentials) {
 	exists, err = MinioClient.BucketExists(creds.Bucket)
 
 	if err != nil {
-		log.Fatalln(err)
+		log.Fatalln("Minio failed to connect: ", err)
 	}
 
 	if !exists {
 		err = MinioClient.MakeBucket(creds.Bucket, "us-east-1")
 
 		if err != nil {
-			log.Fatalln(err)
+			log.Fatalln("Minio failed to create bucket: ", err)
 		}
 	}
 }

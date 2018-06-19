@@ -16,6 +16,6 @@ func MongoConnect(MongoURL string) {
 	Session, err = mgo.Dial(MongoURL)
 
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("MongoDB failed to connect: ", err)
 	}
 }
