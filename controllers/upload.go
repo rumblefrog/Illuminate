@@ -24,11 +24,13 @@ func UploadController(w http.ResponseWriter, r *http.Request) {
 		log.Fatalln(err)
 	}
 
+	ObjectName := fmt.Sprintf("%s%s", uid, filepath.Ext(headers.Filename))
+
 	var n int64
 
 	n, err = modules.MinioClient.PutObject(
 		helpers.Config.Minio.Bucket,
-		fmt.Sprintf("%s%s", uid, filepath.Ext(headers.Filename)),
+		ObjectName,
 		file,
 		headers.Size,
 		minio.PutObjectOptions{ContentType: headers.Header.Get("Content-Type")},
