@@ -25,6 +25,7 @@ func ViewController(w http.ResponseWriter, r *http.Request) {
 	var (
 		fExt  = filepath.Ext(object)
 		fName = strings.TrimSuffix(object, fExt)
+		fHex  = bson.ObjectIdHex(fName)
 		err   error
 	)
 
@@ -32,11 +33,17 @@ func ViewController(w http.ResponseWriter, r *http.Request) {
 
 	result := modules.Shrine{}
 
-	if err = c.FindId(bson.ObjectIdHex(fName)).One(&result); err != nil {
+	if err = c.FindId(fHex).One(&result); err != nil {
 		io.WriteString(w, "Error retrieving object")
 		fmt.Println(err)
 		return
 	}
+
+	c.UpdateId(fHex, bson.M{
+		"$inc": bson.M{
+			"Views": 1,
+		},
+	})
 
 	var fObj *minio.Object
 
@@ -46,5 +53,5 @@ func ViewController(w http.ResponseWriter, r *http.Request) {
 		minio.GetObjectOptions{},
 	)
 
-	fmt.Println(result)
+	io.Copy(w, fObj)
 }
