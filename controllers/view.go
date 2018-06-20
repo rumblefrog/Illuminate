@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"path/filepath"
+	"strconv"
 	"strings"
 
 	"github.com/RumbleFrog/Illuminate/helpers"
@@ -79,6 +80,7 @@ func ViewController(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	w.Header().Set("Views", strconv.FormatUint(result.Views, 10))
 	w.Header().Set("Content-Type", ObjInfo.ContentType)
 
 	io.Copy(w, fObj)
