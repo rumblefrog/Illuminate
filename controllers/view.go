@@ -80,6 +80,7 @@ func ViewController(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	w.Header().Set("Illuminate", "2.0")
 	w.Header().Set("Views", strconv.FormatUint(result.Views, 10))
 	w.Header().Set("Content-Type", ObjInfo.ContentType)
 
