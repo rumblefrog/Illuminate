@@ -16,10 +16,7 @@ func main() {
 	modules.MinioConnect(helpers.Config.Minio)
 	modules.MongoConnect(helpers.Config.MongoURL)
 
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Print(r.URL.Path[1:])
-		fmt.Fprint(w, "Illuminate the world")
-	})
+	http.HandleFunc("/", controllers.ViewController)
 
 	http.HandleFunc("/upload", middlewares.IsPost(middlewares.IsFishy(controllers.UploadController)))
 

@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"path/filepath"
@@ -48,5 +49,5 @@ func UploadController(w http.ResponseWriter, r *http.Request) {
 		log.Println(err)
 	}
 
-	fmt.Fprint(w, fmt.Sprintf("%s/%s%s", helpers.Config.Root, ID.Hex(), fExt))
+	io.WriteString(w, fmt.Sprintf("%s/%s%s", helpers.Config.Root, ID.Hex(), fExt))
 }
