@@ -6,8 +6,6 @@ import (
 
 // Shrine struct
 type Shrine struct {
-	ID          bson.ObjectId `json:"id" bson:"_id"`
-	Ext         string
-	ContentType string
-	Views       uint64
+	ID    bson.ObjectId `json:"id" bson:"_id"`
+	Views uint64
 }

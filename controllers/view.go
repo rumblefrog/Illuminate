@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"path/filepath"
 	"strings"
@@ -25,8 +25,17 @@ func ViewController(w http.ResponseWriter, r *http.Request) {
 	var (
 		fExt  = filepath.Ext(object)
 		fName = strings.TrimSuffix(object, fExt)
-		fHex  = bson.ObjectIdHex(fName)
-		err   error
+	)
+
+	if valid := bson.IsObjectIdHex(fName); !valid {
+		w.WriteHeader(400)
+		io.WriteString(w, "Invalid request")
+		return
+	}
+
+	var (
+		fHex = bson.ObjectIdHex(fName)
+		err  error
 	)
 
 	c := modules.Database.C("illuminate")
@@ -34,8 +43,9 @@ func ViewController(w http.ResponseWriter, r *http.Request) {
 	result := modules.Shrine{}
 
 	if err = c.FindId(fHex).One(&result); err != nil {
+		w.WriteHeader(500)
 		io.WriteString(w, "Error retrieving object")
-		fmt.Println(err)
+		log.Println(err)
 		return
 	}
 
@@ -49,9 +59,27 @@ func ViewController(w http.ResponseWriter, r *http.Request) {
 
 	fObj, err = modules.MinioClient.GetObject(
 		helpers.Config.Minio.Bucket,
-		fName,
+		object,
 		minio.GetObjectOptions{},
 	)
+
+	var ObjInfo minio.ObjectInfo
+
+	if ObjInfo, err = fObj.Stat(); err != nil {
+		w.WriteHeader(500)
+		io.WriteString(w, "Unable to fetch object")
+		log.Println(err)
+		return
+	}
+
+	if err != nil {
+		w.WriteHeader(500)
+		io.WriteString(w, "Unable to fetch object")
+		log.Println(err)
+		return
+	}
+
+	w.Header().Set("Content-Type", ObjInfo.ContentType)
 
 	io.Copy(w, fObj)
 }

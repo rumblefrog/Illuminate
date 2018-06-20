@@ -15,38 +15,47 @@ import (
 
 // UploadController handles the /route route
 func UploadController(w http.ResponseWriter, r *http.Request) {
-	file, headers, _ := r.FormFile("payload")
+	file, headers, err := r.FormFile("payload")
+
+	if err != nil {
+		w.WriteHeader(400)
+		io.WriteString(w, "Invalid payload")
+		return
+	}
 
 	var (
-		ID    = bson.NewObjectId()
-		fExt  = filepath.Ext(headers.Filename)
-		cType = headers.Header.Get("Content-Type")
-		oHex  = fmt.Sprintf("%s%s", ID.Hex(), fExt)
+		ID   = bson.NewObjectId()
+		fExt = filepath.Ext(headers.Filename)
+		oHex = fmt.Sprintf("%s%s", ID.Hex(), fExt)
 	)
 
-	_, err := modules.MinioClient.PutObject(
+	_, err = modules.MinioClient.PutObject(
 		helpers.Config.Minio.Bucket,
 		oHex,
 		file,
 		headers.Size,
-		minio.PutObjectOptions{ContentType: cType},
+		minio.PutObjectOptions{ContentType: headers.Header.Get("Content-Type")},
 	)
 
 	if err != nil {
-		log.Fatalln(err)
+		w.WriteHeader(500)
+		io.WriteString(w, "Unable to upload object")
+		log.Println(err)
+		return
 	}
 
 	c := modules.Database.C("illuminate")
 
 	err = c.Insert(&modules.Shrine{
-		ID:          ID,
-		Ext:         fExt,
-		ContentType: cType,
-		Views:       0,
+		ID:    ID,
+		Views: 0,
 	})
 
 	if err != nil {
+		w.WriteHeader(500)
+		io.WriteString(w, "Unable to insert struct")
 		log.Println(err)
+		return
 	}
 
 	io.WriteString(w, fmt.Sprintf("%s/%s%s", helpers.Config.Root, ID.Hex(), fExt))
