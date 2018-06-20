@@ -1,8 +1,13 @@
 package modules
 
-// Shine struct
-type Shine struct {
-	Object string
-	Ext    string
-	Views  uint64
+import (
+	"github.com/globalsign/mgo/bson"
+)
+
+// Shrine struct
+type Shrine struct {
+	ID          bson.ObjectId `json:"id" bson:"_id"`
+	Ext         string
+	ContentType string
+	Views       uint64
 }

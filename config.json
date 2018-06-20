@@ -1,6 +1,7 @@
 {
+    "Root": "https://illuminate.ngrok.io",
     "Port": 8000,
-    "MongoURL": "mongodb+srv://fishy:Ycb%40hUEHN*u8keL41W1x@dev-db-7p3zq.mongodb.net/test",
+    "MongoURL": "mongodb://localhost/illuminate",
     "Minio": {
         "Endpoint": "127.0.0.1:9000",
         "AccessKey": "26IUCN8B55XPNIV6HEH0",

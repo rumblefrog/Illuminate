@@ -8,39 +8,45 @@ import (
 
 	"github.com/RumbleFrog/Illuminate/helpers"
 	"github.com/RumbleFrog/Illuminate/modules"
+	"github.com/globalsign/mgo/bson"
 	"github.com/minio/minio-go"
-	"github.com/satori/go.uuid"
 )
 
 // UploadController handles the /route route
 func UploadController(w http.ResponseWriter, r *http.Request) {
-
-	fmt.Fprint(w, "Test")
-
 	file, headers, _ := r.FormFile("payload")
 
-	uid, err := uuid.NewV4()
-	if err != nil {
-		log.Fatalln(err)
-	}
+	var (
+		ID    = bson.NewObjectId()
+		fExt  = filepath.Ext(headers.Filename)
+		cType = headers.Header.Get("Content-Type")
+		oHex  = fmt.Sprintf("%s%s", ID.Hex(), fExt)
+	)
 
-	ObjectName := fmt.Sprintf("%s%s", uid, filepath.Ext(headers.Filename))
-
-	var n int64
-
-	n, err = modules.MinioClient.PutObject(
+	_, err := modules.MinioClient.PutObject(
 		helpers.Config.Minio.Bucket,
-		ObjectName,
+		oHex,
 		file,
 		headers.Size,
-		minio.PutObjectOptions{ContentType: headers.Header.Get("Content-Type")},
+		minio.PutObjectOptions{ContentType: cType},
 	)
 
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	log.Println(n)
+	c := modules.Database.C("illuminate")
 
-	// fmt.Println(file.)
+	err = c.Insert(&modules.Shrine{
+		ID:          ID,
+		Ext:         fExt,
+		ContentType: cType,
+		Views:       0,
+	})
+
+	if err != nil {
+		log.Println(err)
+	}
+
+	fmt.Fprint(w, fmt.Sprintf("%s/%s%s", helpers.Config.Root, ID.Hex(), fExt))
 }

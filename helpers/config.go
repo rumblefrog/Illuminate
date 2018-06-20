@@ -11,6 +11,7 @@ var Config Configuration
 
 // Configuration for the Illuminate process
 type Configuration struct {
+	Root     string
 	Port     uint64
 	MongoURL string
 	Minio    *MinioCredentials
