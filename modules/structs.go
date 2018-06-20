@@ -7,5 +7,5 @@ import (
 // Shrine struct
 type Shrine struct {
 	ID    bson.ObjectId `json:"id" bson:"_id"`
-	Views uint64
+	Views uint32
 }

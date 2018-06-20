@@ -51,7 +51,7 @@ func ViewController(w http.ResponseWriter, r *http.Request) {
 
 	c.UpdateId(fHex, bson.M{
 		"$inc": bson.M{
-			"Views": 1,
+			"views": 1,
 		},
 	})
 
