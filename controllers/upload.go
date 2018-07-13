@@ -13,7 +13,7 @@ import (
 	"github.com/minio/minio-go"
 )
 
-// UploadController handles the /route route
+// UploadController handles the /upload route
 func UploadController(w http.ResponseWriter, r *http.Request) {
 	file, headers, err := r.FormFile("payload")
 
